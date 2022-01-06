@@ -1,0 +1,41 @@
+.page-signature {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+
+  .toolbar {
+    position: relative;
+    flex: 0 0 120px;
+    height: 100%;
+    background: #f7f8fc;
+  }
+
+  .main {
+    flex: 1;
+    height: 100%;
+    background: #fff;
+  }
+
+  .fab {
+    position: fixed;
+    right: 40px;
+    bottom: 0;
+    display: flex;
+    transform-origin: right top;
+    transform: rotate(90deg);
+    z-index: 1;
+
+    button {
+      margin-left: 20px;
+      width: auto;
+      padding: 14px 40px;
+      font-size: 26px;
+      font-weight: normal;
+
+      &.primary {
+        background-color: #4080ff;
+        color: #fff;
+      }
+    }
+  }
+}
