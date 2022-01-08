@@ -1,12 +1,14 @@
 <template>
   <div class="page-index">
+    <app-header :show-back="false" title="保函列表"></app-header>
+
     <van-notice-bar
       scrollable
       text="如果您微信绑定的手机号并非在平台注册时所留的法人手机"
     />
 
     <div class="container list">
-      <div class="item">
+      <div class="item" @click="$router.push({ name: 'Project' })">
         <div class="bd">
           <span class="tag">未验证</span>
           <span class="title"
@@ -27,6 +29,8 @@
       </div>
     </div>
   </div>
+
+  <app-tab></app-tab>
 </template>
 
 <script lang="ts">

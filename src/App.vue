@@ -6,7 +6,7 @@
 @import "~vant/lib/style/normalize";
 
 body {
-  //font-size: 28px;
+  font-size: 28px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue",
     sans-serif;
   line-height: 1.5;
@@ -27,5 +27,16 @@ html.full-page {
   #app {
     height: 100%;
   }
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 24px 32px;
+  background: #fff;
+  box-shadow: 0px -8px 16px rgba(20, 62, 81, 0.06);
 }
 </style>

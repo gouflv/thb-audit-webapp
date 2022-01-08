@@ -1,5 +1,7 @@
 <template>
   <div class="page-user">
+    <app-header :show-back="false" title="个人中心"></app-header>
+
     <div class="container">
       <div
         class="card"
@@ -31,6 +33,8 @@
         </div>
       </div>
     </div>
+
+    <app-tab></app-tab>
   </div>
 </template>
 
