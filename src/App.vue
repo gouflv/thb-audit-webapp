@@ -27,6 +27,10 @@ html.full-page {
   #app {
     height: 100%;
   }
+
+  body {
+    background: #fff;
+  }
 }
 
 .footer {

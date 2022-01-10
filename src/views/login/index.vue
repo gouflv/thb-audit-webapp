@@ -1,0 +1,162 @@
+<template>
+  <div class="page-login">
+    <app-header theme="light" :show-back="false"></app-header>
+
+    <div class="logo">
+      <img src="../../assets/logo.png" alt="" />
+    </div>
+
+    <form @submit.stop="onSubmit">
+      <template v-if="formType === 1">
+        <div class="field">
+          <van-field
+            v-model="form.username"
+            placeholder="请输入账号"
+          ></van-field>
+        </div>
+
+        <div class="field">
+          <van-field
+            v-model="form.password"
+            :type="showPassword ? 'text' : 'password'"
+            placeholder="请输入密码"
+            :right-icon="showPassword ? 'eye' : 'closed-eye'"
+            @click-right-icon="showPassword = !showPassword"
+          ></van-field>
+        </div>
+      </template>
+
+      <template v-if="formType === 2">
+        <div class="field">
+          <van-field
+            v-model="form.phone"
+            placeholder="请输入手机号"
+          ></van-field>
+        </div>
+
+        <div class="field">
+          <van-field v-model="form.code" placeholder="请输入验证码">
+            <template #button>
+              <span class="code-btn" @click="onSendCodeClick">
+                {{ isCountDownActive ? `${countDown}s` : "获取验证码" }}
+              </span>
+            </template>
+          </van-field>
+        </div>
+      </template>
+
+      <div class="switch">
+        <span @click="formType = formType === 1 ? 2 : 1">{{
+          formType === 1 ? "验证吗登录" : "密码登录"
+        }}</span>
+      </div>
+
+      <van-checkbox class="law" icon-size="14px" v-model="form.agreement">
+        我已阅读并同意天和保 <a>《隐私政策》</a> <a>《个人信息保护协议》</a>
+      </van-checkbox>
+
+      <van-button type="primary" block size="large" native-type="submit"
+        >登录</van-button
+      >
+    </form>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent, onUnmounted, reactive, ref } from "vue";
+import { useIntervalFn } from "@vueuse/core";
+import { useRouter } from "vue-router";
+import { Toast } from "vant";
+
+export default defineComponent({
+  setup() {
+    const router = useRouter();
+
+    const form = reactive({
+      username: "",
+      password: "",
+      phone: "",
+      code: "",
+      agreement: false,
+    });
+
+    const formType = ref<1 | 2>(2);
+    const showPassword = ref(false);
+
+    const countDown = ref(60);
+    const {
+      pause: pauseCountDown,
+      resume: resumeCountDown,
+      isActive: isCountDownActive,
+    } = useIntervalFn(
+      () => {
+        countDown.value -= 1;
+        if (!countDown.value) {
+          pauseCountDown();
+          countDown.value = 60;
+        }
+      },
+      1000,
+      { immediate: false }
+    );
+    const startCountDown = () => {
+      if (isCountDownActive.value) return;
+      resumeCountDown();
+    };
+
+    const onSendCodeClick = () => {
+      startCountDown();
+    };
+
+    const onSubmit = () => {
+      if (!validate()) return;
+      router.replace({ name: "Home" });
+    };
+
+    const validate = () => {
+      if (formType.value === 1) {
+        if (!form.username) {
+          Toast("请输入账号");
+          return false;
+        }
+        if (!form.password) {
+          Toast("请输入密码");
+          return false;
+        }
+      }
+      if (formType.value === 2) {
+        if (!form.password) {
+          Toast("请输入手机号");
+          return false;
+        }
+
+        if (!form.code) {
+          Toast("请输入验证码");
+          return false;
+        }
+      }
+
+      if (!form.agreement) {
+        Toast("请同意用户协议");
+      }
+
+      return true;
+    };
+
+    document.documentElement.classList.add("full-page");
+    onUnmounted(() => document.documentElement.classList.remove("full-page"));
+
+    return {
+      formType,
+      form,
+      showPassword,
+      countDown,
+      isCountDownActive,
+      onSendCodeClick,
+      onSubmit,
+    };
+  },
+});
+</script>
+
+<style lang="less" src="./index.less"></style>
