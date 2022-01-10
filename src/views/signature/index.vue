@@ -94,7 +94,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, onMounted, onUnmounted, ref } from "vue";
 import Signature, {
   SignatureAction,
 } from "../../components/signature/index.vue";
@@ -179,6 +179,10 @@ export default defineComponent({
       const rect = ct.getBoundingClientRect();
       width.value = rect.width;
       height.value = rect.height;
+    });
+
+    onUnmounted(() => {
+      document.documentElement.classList.remove("full-page");
     });
 
     return {

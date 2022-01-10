@@ -33,6 +33,14 @@ html.full-page {
   }
 }
 
+img {
+  max-width: 100%;
+}
+
+a {
+  color: #4080ff;
+}
+
 .footer {
   position: fixed;
   bottom: 0;

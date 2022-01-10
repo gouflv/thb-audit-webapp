@@ -1,5 +1,7 @@
 <template>
   <div class="page-audit-confirm">
+    <app-header title="提交验证"></app-header>
+
     <div class="form">
       <div class="field">
         <img class="icon" src="../../assets/icon_submit_success.png" alt="" />
@@ -29,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, onMounted, onUnmounted, ref } from "vue";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
@@ -42,6 +44,13 @@ export default defineComponent({
     const onSubmit = () => {
       router.push({ name: "Home" });
     };
+
+    onMounted(() => {
+      document.documentElement.classList.add("full-page");
+    });
+    onUnmounted(() => {
+      document.documentElement.classList.remove("full-page");
+    });
 
     return {
       signature,

@@ -3,6 +3,7 @@ import Login from "../views/login/index.vue";
 import Home from "../views/home/index.vue";
 import User from "../views/user/index.vue";
 import Project from "../views/project/index.vue";
+import FaceResult from "../views/face-result/index.vue";
 import Signature from "../views/signature/index.vue";
 import Agreement from "../views/agreement/index.vue";
 import AuditConfirm from "../views/audit-confirm/index.vue";
@@ -27,6 +28,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/project",
     name: "Project",
     component: Project,
+  },
+  {
+    path: "/face-result",
+    name: "FaceResult",
+    component: FaceResult,
   },
   {
     path: "/agreement",

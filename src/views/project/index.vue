@@ -126,8 +126,8 @@
       <van-button
         type="primary"
         block
-        @click="$router.push({ name: 'Signature' })"
-        >开始认证</van-button
+        @click="$router.push({ name: 'FaceResult' })"
+        >法人验签</van-button
       >
     </div>
   </div>
