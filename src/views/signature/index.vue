@@ -67,8 +67,8 @@
         </div>
         <img
           class="clear"
-          src="../../assets/icon_eye.png"
-          @click="signatureRef?.action.clear()"
+          src="../../assets/icon_clean.png"
+          @click="signatureRef?.actions.clear()"
         />
       </div>
 
