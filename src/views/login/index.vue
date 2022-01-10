@@ -109,7 +109,7 @@ export default defineComponent({
     };
 
     const onSubmit = () => {
-      if (!validate()) return;
+      // if (!validate()) return;
       router.replace({ name: "Home" });
     };
 

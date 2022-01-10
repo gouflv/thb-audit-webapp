@@ -15,9 +15,9 @@
     :height="width"
     :style="{
       position: 'fixed',
-      left: '0px',
-      transform: 'scale(0.5)',
-      'transform-origin': 'left top',
+      left: '-9999px',
+      // transform: 'scale(0.5)',
+      // 'transform-origin': 'left top',
     }"
   />
 </template>
@@ -28,7 +28,7 @@ type FileType = "png" | "jpg";
 
 export interface SignatureAction {
   validate: () => boolean;
-  save: (type?: FileType) => Promise<Blob>;
+  save: (type?: FileType) => Promise<string>;
   clear: () => void;
 }
 
@@ -72,9 +72,10 @@ export default defineComponent({
         "2d"
       ) as CanvasRenderingContext2D);
 
+      clear();
       drawTip();
 
-      ctx.fillRect(0, 250, 100, 200);
+      // ctx.fillRect(0, 250, 100, 200);
     };
 
     const startEventHandler = (event: TouchEvent) => {
@@ -134,7 +135,12 @@ export default defineComponent({
 
     const clear = () => {
       const ctx = context.value!;
-      ctx.clearRect(0, 0, props.width, props.height);
+
+      ctx.save();
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(0, 0, props.width, props.height);
+      ctx.restore();
+
       ctx.closePath();
 
       hasDraw.value = false;
@@ -156,19 +162,15 @@ export default defineComponent({
 
       ctx.restore();
 
-      return new Promise<Blob>((resolve) => {
-        canvas.toBlob(
-          (res) => {
-            resolve(res!);
-          },
-          type === "png" ? "image/png" : "image/jpeg",
-          0.6
-        );
-      });
+      return canvas;
     };
 
     const save = async (type: FileType = "jpg") => {
-      return drawRotatedImage(type);
+      const rotatedCanvas = await drawRotatedImage(type);
+      return rotatedCanvas.toDataURL(
+        type === "png" ? "image/png" : "image/jpeg",
+        0.6
+      );
     };
 
     onMounted(() => {

@@ -99,6 +99,9 @@ import Signature, {
   SignatureAction,
 } from "../../components/signature/index.vue";
 import { onClickOutside } from "@vueuse/core";
+import { Toast } from "vant";
+import router from "../../router";
+import { useRouter } from "vue-router";
 
 const COLORS = [
   "#8D3B15",
@@ -116,6 +119,8 @@ export default defineComponent({
     Signature,
   },
   setup() {
+    const router = useRouter();
+
     const containerRef = ref<HTMLDivElement>();
     const width = ref(0);
     const height = ref(0);
@@ -157,12 +162,14 @@ export default defineComponent({
       const actions = signatureRef.value.actions as SignatureAction;
 
       if (!actions.validate()) {
-        alert(11);
+        Toast("请签名");
         return;
       }
 
       const file = await actions.save();
-      console.log(file);
+      localStorage.setItem("signature", file);
+
+      router.push({ name: "AuditConfirm" });
     };
 
     onMounted(() => {

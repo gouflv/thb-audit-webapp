@@ -123,7 +123,12 @@
     </div>
 
     <div class="footer">
-      <van-button type="primary" block>开始认证</van-button>
+      <van-button
+        type="primary"
+        block
+        @click="$router.push({ name: 'Signature' })"
+        >开始认证</van-button
+      >
     </div>
   </div>
 </template>

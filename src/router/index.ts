@@ -5,15 +5,16 @@ import User from "../views/user/index.vue";
 import Project from "../views/project/index.vue";
 import Signature from "../views/signature/index.vue";
 import Agreement from "../views/agreement/index.vue";
+import AuditConfirm from "../views/audit-confirm/index.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: "/login",
+    path: "/",
     name: "Login",
     component: Login,
   },
   {
-    path: "/",
+    path: "/home",
     name: "Home",
     component: Home,
   },
@@ -36,6 +37,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/signature",
     name: "Signature",
     component: Signature,
+  },
+  {
+    path: "/audit-confirm",
+    name: "AuditConfirm",
+    component: AuditConfirm,
   },
 ];
 
