@@ -12,11 +12,11 @@
         <img class="thumb" :src="avatar" />
         <div class="content">
           <div class="title">
-            <span class="name">张*三</span>
-            （138****5978）
-            <div class="switch" @click="showPhone = !showPhone">
+            <span class="name">{{ name }}</span>
+            （{{ phone }}）
+            <div class="switch" @click="show = !show">
               <van-icon
-                v-if="showPhone"
+                v-if="show"
                 class="icon"
                 name="eye"
                 :size="15"
@@ -29,7 +29,7 @@
               ></van-icon>
             </div>
           </div>
-          <div class="desc">AA</div>
+          <div class="desc">{{ cname }}</div>
         </div>
       </div>
     </div>
@@ -39,16 +39,31 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import cardBg from "@/assets/bg_user_card.png";
 import avatar from "@/assets/user_default.png";
+import { app } from "../../store/app";
 
 export default defineComponent({
   setup() {
-    const showPhone = ref(false);
+    const show = ref(false);
+
+    const name = computed(() => {
+      if (show.value) return app.user.enterprise.legal_name;
+      return app.user.enterprise.legal_name.replace(/(.).+?(.?)/, "$1*$2");
+    });
+    const phone = computed(() => {
+      if (show.value) return app.user.phone;
+      return app.user.phone.replace(/(\d{3})\d+(\d{4})/, "$1****$2");
+    });
+
+    const cname = computed(() => app.user.enterprise.name);
 
     return {
-      showPhone,
+      show,
+      name,
+      phone,
+      cname,
       cardBg,
       avatar,
     };

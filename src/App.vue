@@ -2,6 +2,16 @@
   <router-view />
 </template>
 
+<script lang="ts">
+import { app } from "./store/app";
+
+export default {
+  setup() {
+    return { app };
+  },
+};
+</script>
+
 <style lang="less">
 @import "~vant/lib/style/normalize";
 

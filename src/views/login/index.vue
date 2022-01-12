@@ -70,6 +70,7 @@ import { Toast } from "vant";
 import { defaultErrorHandler, POST, setToken } from "../../ajax";
 import pick from "lodash.pick";
 import { isDev } from "../../utils";
+import { app } from "../../store/app";
 
 export default defineComponent({
   setup() {
@@ -117,7 +118,7 @@ export default defineComponent({
       Toast.loading({ duration: 0, forbidClick: true });
 
       try {
-        const { token } = await POST({
+        const user = await POST({
           url: "login/index",
           params: {
             login_type: formType.value,
@@ -126,7 +127,11 @@ export default defineComponent({
               : pick(form, ["phone", "code"])),
           },
         });
-        if (token) setToken(token);
+
+        const { token } = user;
+        setToken(token);
+        app.setUser(user);
+
         router.replace({ name: "Home" });
       } catch (e) {
         defaultErrorHandler(e);
