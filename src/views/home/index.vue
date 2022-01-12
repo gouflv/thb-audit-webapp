@@ -8,24 +8,22 @@
     />
 
     <div class="container list">
-      <div class="item" @click="$router.push({ name: 'Project' })">
+      <div
+        v-for="item in items"
+        :key="item.apply_no"
+        class="item"
+        @click="
+          $router.push({ name: 'Project', params: { id: item.apply_no } })
+        "
+      >
         <div class="bd">
-          <span class="tag">未验证</span>
-          <span class="title"
-            >Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-            Laudantium, sit!</span
-          >
+          <span class="tag" :class="{ active: !item.validate }">{{
+            item.validate_name
+          }}</span>
+          <span class="title">{{ item.project.name }}</span>
           <van-icon class="arrow" name="arrow" color="#999"></van-icon>
         </div>
-        <div class="ft">2020</div>
-      </div>
-      <div class="item">
-        <div class="bd">
-          <span class="tag active">未验证</span>
-          <span class="title">Lorem ipsum dolor sit amet consectetur.</span>
-          <van-icon class="arrow" name="arrow" color="#999"></van-icon>
-        </div>
-        <div class="ft">2020</div>
+        <div class="ft">{{ dateFormat(item.create_time) }}</div>
       </div>
     </div>
   </div>
@@ -35,8 +33,24 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useFetch } from "../../use/useFetch";
+import { dateFormat } from "../../format";
 
-export default defineComponent({});
+export default defineComponent({
+  setup() {
+    const { loading, data, fetch } = useFetch({
+      url: "validate/list",
+      paginated: true,
+    });
+
+    fetch();
+
+    return {
+      items: data,
+      dateFormat,
+    };
+  },
+});
 </script>
 
 <style scoped lang="less" src="./index.less"></style>

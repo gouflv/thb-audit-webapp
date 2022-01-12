@@ -1,5 +1,5 @@
 <template>
-  <div class="page-face-result">
+  <div v-if="!loading" class="page-face-result">
     <div class="main">
       <img v-if="success" src="../../assets/icon_success.png" alt="" />
       <img v-else src="../../assets/icon_failed.png" alt="" />
@@ -7,12 +7,21 @@
     </div>
 
     <div v-if="success" class="actions">
-      <van-button type="primary" @click="$router.replace({ name: 'Signature' })"
+      <van-button
+        type="primary"
+        @click="
+          $router.replace({
+            name: 'Agreement',
+            params: {
+              id: $route.query.apply_no,
+            },
+          })
+        "
         >下一步</van-button
       >
     </div>
     <div v-else class="actions">
-      <van-button type="primary">重新认证</van-button>
+      <van-button type="primary" @click="onRedoClick">重新认证</van-button>
       <div class="back" @click="$router.replace({ name: 'Home' })">
         返回列表
       </div>
@@ -22,13 +31,78 @@
 
 <script lang="ts">
 import { onMounted, onUnmounted, ref } from "vue";
+import qs from "qs";
+import get from "lodash.get";
+import { defaultErrorHandler, POST } from "../../ajax";
+import { Toast } from "vant";
+import { useFaceValidate } from "../../use/useFaceValidate";
+import { useRoute } from "vue-router";
 
 export default {
   setup() {
-    const success = ref(true);
+    const { query } = useRoute();
+    const { createAndRedirectToValidate } = useFaceValidate(
+      query.apply_no as string
+    );
 
-    onMounted(() => {
+    const response = (() => {
+      try {
+        return JSON.parse(
+          decodeURIComponent(
+            get(
+              qs.parse(window.location.search, {
+                ignoreQueryPrefix: true,
+              }),
+              "response"
+            ) as string
+          )
+        ) as {
+          code: number;
+          extInfo: {
+            certifyId: string;
+          };
+        };
+      } catch (e) {
+        defaultErrorHandler(e);
+      }
+    })();
+    console.log(response);
+
+    const loading = ref(true);
+    const success = ref(false);
+
+    async function saveResponse() {
+      await POST({
+        headers: {
+          "content-type": "application/json",
+        },
+        url: "realpersonauth/updateReturnResult",
+        data: {
+          CertifyId: response?.extInfo.certifyId,
+          return_result: {
+            response,
+          },
+        },
+      });
+    }
+
+    function onRedoClick() {
+      createAndRedirectToValidate();
+    }
+
+    onMounted(async () => {
       document.documentElement.classList.add("full-page");
+
+      try {
+        Toast.loading({ duration: 0, forbidClick: true });
+        await saveResponse();
+        success.value = response?.code === 1000;
+      } catch (e) {
+        defaultErrorHandler(e);
+      } finally {
+        Toast.clear();
+        loading.value = false;
+      }
     });
     onUnmounted(() => {
       document.documentElement.classList.remove("full-page");
@@ -36,6 +110,8 @@ export default {
 
     return {
       success,
+      loading,
+      onRedoClick,
     };
   },
 };

@@ -13,7 +13,7 @@
       <van-button
         type="primary"
         block
-        @click="$router.push({ name: 'Signature' })"
+        @click="$router.push({ name: 'Signature', params: $route.params })"
         >同意并签章</van-button
       >
     </div>

@@ -25,7 +25,7 @@ const routes: Array<RouteRecordRaw> = [
     component: User,
   },
   {
-    path: "/project",
+    path: "/project/:id",
     name: "Project",
     component: Project,
   },
@@ -35,17 +35,17 @@ const routes: Array<RouteRecordRaw> = [
     component: FaceResult,
   },
   {
-    path: "/agreement",
+    path: "/agreement/:id",
     name: "Agreement",
     component: Agreement,
   },
   {
-    path: "/signature",
+    path: "/signature/:id",
     name: "Signature",
     component: Signature,
   },
   {
-    path: "/audit-confirm",
+    path: "/audit-confirm/:id",
     name: "AuditConfirm",
     component: AuditConfirm,
   },

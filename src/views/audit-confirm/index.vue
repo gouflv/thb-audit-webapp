@@ -32,18 +32,71 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, onUnmounted, ref } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+import { dataURLtoFile } from "../../utils";
+import { defaultErrorHandler, POST } from "../../ajax";
+import { Toast } from "vant";
 
 export default defineComponent({
   setup() {
+    const { params } = useRoute();
     const router = useRouter();
 
     const signature = ref(localStorage.getItem("signature"));
     const checked = ref(false);
 
-    const onSubmit = () => {
-      router.push({ name: "Home" });
+    const onSubmit = async () => {
+      try {
+        Toast.loading({ duration: 0, forbidClick: true });
+        const url = await upload();
+        await submit(url);
+
+        setTimeout(() => {
+          Toast({
+            message: "验证提交成功",
+          });
+        });
+
+        setTimeout(() => {
+          router.push({ name: "Home" });
+        }, 2000);
+      } catch (e) {
+        defaultErrorHandler(e);
+      } finally {
+        Toast.clear();
+      }
     };
+
+    async function upload() {
+      if (!signature.value) {
+        throw new Error("missing signature");
+      }
+
+      const file = dataURLtoFile(
+        signature.value,
+        `apply_signature_${params.id}.jpg`
+      );
+      const data = new FormData();
+      data.append("file", file, file.name);
+
+      const { url } = await POST({
+        headers: { "Content-Type": "multipart/form-data" },
+        url: "upload/upFile",
+        baseURL: "/thb",
+        data,
+      });
+      return url;
+    }
+
+    async function submit(fileUrl: string) {
+      await POST({
+        url: "realpersonauth/updateValidate",
+        params: {
+          apply_no: params.id,
+          legal_signature_url: fileUrl,
+        },
+      });
+    }
 
     onMounted(() => {
       document.documentElement.classList.add("full-page");

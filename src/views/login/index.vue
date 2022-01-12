@@ -6,7 +6,7 @@
       <img src="../../assets/logo.png" alt="" />
     </div>
 
-    <form @submit.stop="onSubmit">
+    <form @submit.prevent="onSubmit">
       <template v-if="formType === 1">
         <div class="field">
           <van-field
@@ -67,20 +67,23 @@ import { defineComponent, onUnmounted, reactive, ref } from "vue";
 import { useIntervalFn } from "@vueuse/core";
 import { useRouter } from "vue-router";
 import { Toast } from "vant";
+import { defaultErrorHandler, POST, setToken } from "../../ajax";
+import pick from "lodash.pick";
+import { isDev } from "../../utils";
 
 export default defineComponent({
   setup() {
     const router = useRouter();
 
     const form = reactive({
-      username: "",
-      password: "",
+      username: isDev ? "18950491796" : "",
+      password: isDev ? "18950491796" : "",
       phone: "",
       code: "",
-      agreement: false,
+      agreement: isDev ? true : false,
     });
 
-    const formType = ref<1 | 2>(2);
+    const formType = ref<1 | 2>(1);
     const showPassword = ref(false);
 
     const countDown = ref(60);
@@ -108,9 +111,28 @@ export default defineComponent({
       startCountDown();
     };
 
-    const onSubmit = () => {
-      // if (!validate()) return;
-      router.replace({ name: "Home" });
+    const onSubmit = async () => {
+      if (!validate()) return;
+
+      Toast.loading({ duration: 0, forbidClick: true });
+
+      try {
+        const { token } = await POST({
+          url: "login/index",
+          params: {
+            login_type: formType.value,
+            ...(formType.value === 1
+              ? pick(form, ["username", "password"])
+              : pick(form, ["phone", "code"])),
+          },
+        });
+        if (token) setToken(token);
+        router.replace({ name: "Home" });
+      } catch (e) {
+        defaultErrorHandler(e);
+      } finally {
+        Toast.clear();
+      }
     };
 
     const validate = () => {
