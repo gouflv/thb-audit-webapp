@@ -2,7 +2,7 @@
   <div class="page-project">
     <app-header title="项目信息 "></app-header>
 
-    <div class="container">
+    <div v-if="data" class="container">
       <div class="section">
         <div class="hd">
           <img class="icon" :src="icon1" />

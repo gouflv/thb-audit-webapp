@@ -7,15 +7,16 @@ import FaceResult from "../views/face-result/index.vue";
 import Signature from "../views/signature/index.vue";
 import Agreement from "../views/agreement/index.vue";
 import AuditConfirm from "../views/audit-confirm/index.vue";
+import { app } from "../store/app";
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: "/",
+    path: "/login",
     name: "Login",
     component: Login,
   },
   {
-    path: "/home",
+    path: "/",
     name: "Home",
     component: Home,
   },
@@ -54,6 +55,14 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (!app.hasToken() && to.name !== "Login") {
+    next({ name: "Login" });
+    return;
+  }
+  next();
 });
 
 export default router;

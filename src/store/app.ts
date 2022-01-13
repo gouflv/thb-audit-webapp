@@ -26,4 +26,12 @@ export const app = new (class {
     this.user = data;
     localStorage.setItem("user", JSON.stringify(data));
   }
+
+  invalidateUser() {
+    localStorage.removeItem("token");
+  }
+
+  hasToken() {
+    return !!localStorage.getItem("user");
+  }
 })();

@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { Dialog, Toast } from "vant";
 import router from "./router";
+import { app } from "./store/app";
 
 const API_BASE = "/api";
 
@@ -11,7 +12,7 @@ export const setToken = (val: string) => localStorage.setItem("token", val);
 const globalErrorHandler = (e: any) => {
   console.error(e);
   Toast.clear();
-  Dialog.alert(e.message || e);
+  Dialog.alert({ message: "服务繁忙" });
 };
 
 export const defaultErrorHandler = (e: any) => {
@@ -44,7 +45,9 @@ request.interceptors.response.use(
     if (res.data?.code) {
       // 401
       if (~res.data?.msg.indexOf("token")) {
+        app.invalidateUser();
         router.replace({ name: "Login" });
+        return Promise.reject({ _handle: true });
       }
 
       const error = new Error(res.data?.msg || "server error");

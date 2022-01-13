@@ -12,7 +12,7 @@ export const useFaceValidate = (id: string) => {
       Toast.loading({ duration: 0, forbidClick: true });
       const res = await POST({
         url: "realpersonauth/init",
-        data: {
+        params: {
           apply_no: id,
           //@ts-ignore
           mate_info: window.getMetaInfo(),
