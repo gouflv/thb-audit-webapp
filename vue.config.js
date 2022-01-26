@@ -1,6 +1,3 @@
 module.exports = {
-  devServer: {
-    hot: false,
-    liveReload: false,
-  },
+  publicPath: process.env.VUE_APP_PUBLIC_PATH || "/",
 };
