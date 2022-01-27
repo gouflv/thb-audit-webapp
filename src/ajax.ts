@@ -3,7 +3,7 @@ import { Dialog, Toast } from "vant";
 import router from "./router";
 import { app } from "./store/app";
 
-export const API_BASE = process.env.VUE_APP_API_BASE ?? "/api/h5";
+export const API_BASE = process.env.VUE_APP_API_BASE ?? "/api";
 
 const getToken = () => localStorage.getItem("token") || "";
 
