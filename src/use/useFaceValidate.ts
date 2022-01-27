@@ -11,7 +11,7 @@ export const useFaceValidate = (id: string) => {
     try {
       Toast.loading({ duration: 0, forbidClick: true });
       const res = await POST({
-        url: "realpersonauth/init",
+        url: "h5/realpersonauth/init",
         params: {
           apply_no: id,
           //@ts-ignore
