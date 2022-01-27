@@ -81,8 +81,7 @@ export default defineComponent({
 
       const { url } = await POST({
         headers: { "Content-Type": "multipart/form-data" },
-        url: "upload/upFile",
-        baseURL: "/thb",
+        url: "/thb/upload/upFile",
         data,
       });
       return url;
@@ -90,7 +89,7 @@ export default defineComponent({
 
     async function submit(fileUrl: string) {
       await POST({
-        url: "realpersonauth/updateValidate",
+        url: "h5/realpersonauth/updateValidate",
         params: {
           apply_no: params.id,
           legal_signature_url: fileUrl,

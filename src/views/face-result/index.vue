@@ -76,7 +76,7 @@ export default {
         headers: {
           "content-type": "application/json",
         },
-        url: "realpersonauth/updateReturnResult",
+        url: "h5/realpersonauth/updateReturnResult",
         data: {
           CertifyId: response?.extInfo.certifyId,
           return_result: {

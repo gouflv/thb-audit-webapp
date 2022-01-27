@@ -119,7 +119,7 @@ export default defineComponent({
 
       try {
         const user = await POST({
-          url: "login/index",
+          url: "h5/login/index",
           params: {
             login_type: formType.value,
             ...(formType.value === 1

@@ -113,7 +113,7 @@ export default defineComponent({
     );
 
     const { data, fetch } = useFetch({
-      url: "validate/detail",
+      url: "h5/validate/detail",
       params: {
         apply_no: params.id,
       },

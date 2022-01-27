@@ -39,7 +39,7 @@ import { dateFormat } from "../../format";
 export default defineComponent({
   setup() {
     const { loading, data, fetch } = useFetch({
-      url: "validate/list",
+      url: "h5/validate/list",
       paginated: true,
     });
 
