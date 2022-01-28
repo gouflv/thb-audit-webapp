@@ -52,7 +52,6 @@ request.interceptors.response.use(
 
       const error = new Error(res.data?.msg || "server error");
       // @ts-ignore
-      error._handle = true;
       return Promise.reject(error);
     }
     return res;
