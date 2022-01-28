@@ -77,7 +77,7 @@ export default defineComponent({
     const router = useRouter();
 
     const form = reactive({
-      username: isDev ? "18950491796" : "",
+      username: isDev ? "chenlianjiangjianzhu" : "",
       password: isDev ? "18950491796" : "",
       phone: "",
       code: "",

@@ -13,7 +13,11 @@
         :key="item.apply_no"
         class="item"
         @click="
-          $router.push({ name: 'Project', params: { id: item.apply_no } })
+          $router.push({
+            name: 'Project',
+            params: { id: item.apply_no },
+            query: { validated: item.validate ? 'true' : undefined },
+          })
         "
       >
         <div class="bd">

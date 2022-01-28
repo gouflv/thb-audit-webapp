@@ -21,11 +21,15 @@
           </div>
           <div class="cell">
             <div class="label">中标价格（万元）</div>
-            <div class="value">{{ data.guarantee_amount }}</div>
+            <div class="value">{{ data.project.bid_price }}</div>
           </div>
           <div class="cell">
             <div class="label">保函形式</div>
-            <div class="value">{{ data.project.gaurantee_mode }}</div>
+            <div class="value">{{ data.guarantee_type }}</div>
+          </div>
+          <div class="cell">
+            <div class="label">工程预计完工时间</div>
+            <div class="value">{{ data.plan_finish_time }}</div>
           </div>
           <div class="cell">
             <div class="label">担保金额（万元）</div>
@@ -63,10 +67,6 @@
             <div class="value">{{ person.organization_name }}</div>
           </div>
           <div class="cell">
-            <div class="label">社会信用代码</div>
-            <div class="value">{{ person.credit_code }}</div>
-          </div>
-          <div class="cell">
             <div class="label">联系人</div>
             <div class="value">{{ person.contact_name }}</div>
           </div>
@@ -74,23 +74,11 @@
             <div class="label">联系电话</div>
             <div class="value">{{ person.contact_phone }}</div>
           </div>
-          <div v-if="person.type === '1'" class="cell">
-            <div class="label">担保金额（万元）</div>
-            <div class="value">{{ "??" }}</div>
-          </div>
-          <div class="cell">
-            <div class="label">招标项目编号</div>
-            <div class="value">{{ person.tenderee_project_no }}</div>
-          </div>
-          <div class="cell">
-            <div class="label">联系地址</div>
-            <div class="value">{{ person.contact_address }}</div>
-          </div>
         </div>
       </div>
     </div>
 
-    <div class="footer">
+    <div class="footer" v-if="!validated">
       <van-button type="primary" block @click="onClick">法人验签</van-button>
     </div>
   </div>
@@ -107,7 +95,11 @@ import { useFaceValidate } from "../../use/useFaceValidate";
 
 export default defineComponent({
   setup() {
-    const { params } = useRoute();
+    const {
+      params,
+      query: { validated },
+    } = useRoute();
+
     const { createAndRedirectToValidate } = useFaceValidate(
       params.id as string
     );
@@ -125,6 +117,7 @@ export default defineComponent({
     }
 
     return {
+      validated,
       data,
       onClick,
 
