@@ -34,6 +34,10 @@
       </div>
     </div>
 
+    <div class="float-btn-container">
+      <van-button @click="onLogoutClick">退出登录</van-button>
+    </div>
+
     <app-tab></app-tab>
   </div>
 </template>
@@ -43,9 +47,12 @@ import { computed, defineComponent, ref } from "vue";
 import cardBg from "@/assets/bg_user_card.png";
 import avatar from "@/assets/user_default.png";
 import { app } from "../../store/app";
+import { Dialog } from "vant";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   setup() {
+    const router = useRouter();
     const show = ref(false);
 
     const name = computed(() => {
@@ -59,6 +66,12 @@ export default defineComponent({
 
     const cname = computed(() => app.user.enterprise.name);
 
+    async function onLogoutClick() {
+      await Dialog.confirm({ message: "确认退出登录" });
+      app.logout();
+      router.replace({ name: "Login" });
+    }
+
     return {
       show,
       name,
@@ -66,6 +79,7 @@ export default defineComponent({
       cname,
       cardBg,
       avatar,
+      onLogoutClick,
     };
   },
 });

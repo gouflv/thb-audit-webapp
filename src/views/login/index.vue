@@ -47,7 +47,7 @@
 
       <div class="switch">
         <span @click="formType = formType === 1 ? 2 : 1">{{
-          formType === 1 ? "验证吗登录" : "密码登录"
+          formType === 1 ? "验证码登录" : "密码登录"
         }}</span>
       </div>
 
@@ -165,6 +165,7 @@ export default defineComponent({
 
       if (!form.agreement) {
         Toast("请同意用户协议");
+        return false;
       }
 
       return true;

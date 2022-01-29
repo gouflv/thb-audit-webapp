@@ -33,7 +33,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, onUnmounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { dataURLtoFile } from "../../utils";
+import { dataURLtoFile, isDev } from "../../utils";
 import { defaultErrorHandler, POST } from "../../ajax";
 import { Toast } from "vant";
 
@@ -43,9 +43,13 @@ export default defineComponent({
     const router = useRouter();
 
     const signature = ref(localStorage.getItem("signature"));
-    const checked = ref(false);
+    const checked = ref(isDev ? true : false);
 
     const onSubmit = async () => {
+      if (!checked.value) {
+        Toast("请阅读并勾选确认信息");
+        return;
+      }
       try {
         Toast.loading({ duration: 0, forbidClick: true });
         const url = await upload();

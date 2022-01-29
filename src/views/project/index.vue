@@ -24,7 +24,7 @@
             <div class="value">{{ data.project.bid_price }}</div>
           </div>
           <div class="cell">
-            <div class="label">保函形式</div>
+            <div class="label">保函类型</div>
             <div class="value">{{ data.guarantee_type }}</div>
           </div>
           <div class="cell">

@@ -1,6 +1,6 @@
 <template>
   <div class="page-index">
-    <app-header :show-back="false" title="保函列表"></app-header>
+    <app-header :show-back="false" title="项目列表"></app-header>
 
     <van-notice-bar
       scrollable

@@ -32,6 +32,10 @@ export const app = new (class {
   }
 
   hasToken() {
-    return !!localStorage.getItem("user");
+    return !!localStorage.getItem("token");
+  }
+
+  logout() {
+    localStorage.removeItem("token");
   }
 })();

@@ -20,7 +20,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 .container {
   margin-top: 30px;
   padding-bottom: 150px;
